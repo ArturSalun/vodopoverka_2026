@@ -1,0 +1,16 @@
+{
+  "name": "VODOPOVERKA - Повірка лічильників води у Харкові",
+  "short_name": "VODOPOVERKA",
+  "description": "Професійна повірка лічильників води без зняття у Харкові",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
