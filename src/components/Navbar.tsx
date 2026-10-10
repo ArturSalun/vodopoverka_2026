@@ -24,7 +24,7 @@ const ContactButtons = memo(() => (
 ContactButtons.displayName = 'ContactButtons';
 
 const NavLinks = memo(({ onClose, isMobile }: { onClose?: () => void; isMobile?: boolean }) => {
-  const { content, toggleLanguage } = useLanguage();
+  const { content } = useLanguage();
   const location = useLocation();
 
   const scrollToSection = useCallback((sectionId: string) => {
@@ -38,7 +38,7 @@ const NavLinks = memo(({ onClose, isMobile }: { onClose?: () => void; isMobile?:
   }, [location.pathname, onClose]);
 
   const linkClass = isMobile
-    ? "text-xl font-semibold whitespace-nowrap text-white hover:text-accent-300 transition-colors py-2"
+    ? "text-xl font-semibold whitespace-nowrap text-white hover:text-accent-300 transition-colors py-2 text-left"
     : "text-lg font-semibold whitespace-nowrap bg-gradient-to-r from-white to-accent-200 bg-clip-text text-transparent hover:from-accent-300 hover:to-accent-400 transition-all duration-300";
 
   return (
@@ -48,15 +48,23 @@ const NavLinks = memo(({ onClose, isMobile }: { onClose?: () => void; isMobile?:
       <Link to="/about" className={linkClass} onClick={onClose}>{content.nav.about}</Link>
       <Link to="/faq" className={linkClass} onClick={onClose}>{content.nav.faq}</Link>
       <Link to="/contact" className={linkClass} onClick={onClose}>{content.nav.contacts}</Link>
-      <button onClick={() => { toggleLanguage(); onClose?.(); }}
-        className="mt-2 hover:text-accent-300 transition-colors border border-white/30 px-3 py-1.5 rounded-lg text-base font-bold whitespace-nowrap hover:bg-white/10 text-white">
-        {content.nav.language}
-      </button>
     </>
   );
 });
 
 NavLinks.displayName = 'NavLinks';
+
+const LanguageButton = memo(() => {
+  const { content, toggleLanguage } = useLanguage();
+  return (
+    <button onClick={toggleLanguage}
+      className="hover:text-accent-300 transition-colors border border-white/30 px-3 py-1.5 rounded-lg text-sm font-bold whitespace-nowrap hover:bg-white/10 text-white">
+      {content.nav.language}
+    </button>
+  );
+});
+
+LanguageButton.displayName = 'LanguageButton';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -94,18 +102,22 @@ const Navbar = () => {
             </div>
           </Link>
 
-          <button onClick={toggleMenu} className="md:hidden absolute top-4 right-4 z-50 p-2.5 rounded-lg bg-white/15 hover:bg-white/25 transition-colors text-white backdrop-blur-sm" aria-label="Toggle menu">
+          <div className="md:hidden absolute top-1/2 right-16 -translate-y-1/2 z-50">
+            <LanguageButton />
+          </div>
+          <button onClick={toggleMenu} className="md:hidden absolute top-1/2 right-4 -translate-y-1/2 z-50 p-2.5 rounded-lg bg-white/15 hover:bg-white/25 transition-colors text-white backdrop-blur-sm" aria-label="Toggle menu">
             {isMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
           </button>
 
           <div className="hidden md:flex items-center space-x-5 lg:space-x-7 text-white">
             <NavLinks />
+            <LanguageButton />
           </div>
         </div>
 
         {isMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-primary-900/95 backdrop-blur-lg shadow-2xl py-6 px-6 z-50 animate-fade-in border-t border-white/10">
-            <div className="flex flex-col space-y-2 text-white">
+            <div className="flex flex-col items-start space-y-2 text-white">
               <NavLinks onClose={closeMenu} isMobile={true} />
             </div>
           </div>
